@@ -11,8 +11,8 @@ function App(){
 	return(
 		<Router>
 			<Switch>
-				<Route exact path="/" component={Signup}/>
 				<Route path="/main/" component={Routes} />
+				<Route path="/" component={Signup}/>
 			</Switch>
 		</Router>
 	)

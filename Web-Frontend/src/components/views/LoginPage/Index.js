@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import { useAsync } from "react-async"
+// import { authService, firebaseInstance } from "fbase";
 import styled from 'styled-components';
 import logo_text from '../../../images/titleBlack.png'
 import logo_mark from '../../../images/logoCoffee.png'
@@ -41,36 +42,41 @@ border: none;
 
 
 function Index (){
-    const [id, setId] =  useState('');
-    const [pw, setPw] = useState('');
+    const [email, setEmail] =  useState('');
+    const [password, setPassword] = useState('');
     const [isError, setisError] = useState(false);
 
-    const onChangeId = (e) => {
+    const onChangeEmail = (e) => {
         const target = e.target.value;
-        setId(target);
+        setEmail(target);
     }
 
     const onChangePW = (e) => {
         const target = e.target.value;
-        setPw(target);
+        setPassword(target);
     }
     
     const goSignUp = (e) => {
+        e.preventDefault();
         return window.location.href= "/signup"
     }
 
-    const login = (e) => {
-        axios.post('',{
-            id: id,
-            pw: pw
-        })
-        .then((response) => {
+    const login = async(e) => {
+        let data;
+        e.preventDefault();
+        /* try{
+            // log in
+            data = await authService.signInWithEmailAndPassword(
+                email, password
+            );
+            console.log(data);
             return window.location.href="/main"
-        })
-        .catch((error) => {
+        }
+        catch(error){
             console.log(error);
             setisError(true);
-        })
+        } */
+
     }
 
     return(
@@ -78,7 +84,7 @@ function Index (){
             <img style={{maxHeight: "75px", margin: "10% auto", marginBottom: "0", display: "block"}} src={logo_mark} alt="logo_mark"/>
             <img style={{maxWidth: "300px", margin: "5px auto", display: "block"}} src={logo_text} alt="logo_text"/>
             <Box>
-                <LoginInput type="text" placeholder="아이디" onChange={onChangeId}/>
+                <LoginInput type="text" placeholder="아이디" onChange={onChangeEmail}/>
                 <LoginInput type="password" placeholder="비밀번호" onChange={onChangePW}/>
                 {isError && <div style={{color : 'red'}}>아이디와 비밀번호를 다시 확인하십시오.</div>}
                 <Button style={{marginTop: "15px"}} onClick={login}>로그인</Button>

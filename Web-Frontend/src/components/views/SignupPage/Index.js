@@ -1,40 +1,71 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import axios from 'axios';
+// import { authService, firebaseInstance } from "fbase";
 import styled from 'styled-components';
 import {Checkbox} from 'antd';
 import { useHistory } from "react-router-dom";
 
 const Container = styled.div`
-width: 98%;
-height: 100%;
-margin: 0 auto;
+width: 500px;
+// height: 600px;
+margin: 50px auto;
+border-radius: 10px;
 padding: 10px;
+background-color: #ffd098;
 `
 const Title = styled.div`
 font-size: 30px;
 border-bottom: 1px solid #F7F9FC;
 height: 40px;
-font-style: italic;
+// font-style: italic;
 font-weight: 700;
 `
-const SignupBox = styled.form``
+const SignupInput = styled.input`
+width: 100%;
+height: 30px;
+display: block;
+border: none;
+padding: 5px;
+border-radius: 5px;
+margin: 5px auto;
+`
+
+const SignupBox = styled.form`
+padding: 10px;
+`
 
 const Box = styled.div`
 width: 100%;
-padding: 10px;
 `
 
-const TypeBtn = styled.button`
-width: 90%;
+const TypeBtn = styled.div`
+width: 100%;
+height: 50px;
 margin: 10px auto;
 padding: 10px;
 border-radius: 5px;
+background-color: #ff8b00;
+position : relative;
+// box-shadow: 3px 5px 5px 3px #f5f5f5;
 `
 const SubmitBtn = styled.button`
+width: 100%;
+height: 50px;
+margin: 10px auto;
+padding: 10px;
+border-radius: 5px;
+background-color: #ff8b00;
+position : relative;
+font-size: 24px;
+font-weight: 700;
+// box-shadow: 3px 5px 5px 3px #f5f5f5;
+&:hover{
+    background-color: white;
+}
 `
 
-function Index({}){
-    const [userId, setUserId] = useState('');
+function Index(){
+    const [userEmail, setUserEmail] = useState('');
     const [userPw, setUserPW] = useState('');
     const [pwError, setPWError] = useState(false);
     
@@ -42,7 +73,7 @@ function Index({}){
     const [isCustomer, setisCustomer] = useState(false);
     const [isStore, setisStore] = useState(false);
 
-    const [customerInfo, setCustomerInfo] = useState({email: "", name: ""})
+    const [customerInfo, setCustomerInfo] = useState({name: ""})
     const [storeInfo, setStoreInfo] = useState({
         cafeName: "",
         phone: "",
@@ -61,20 +92,21 @@ function Index({}){
         setTerm(true);
 		}else{
 			setTerm(false);
+            setTermError(true);
 		}
 	},[term]);
 
-    const onChangeId = useCallback((e) => {
+    const onChangeEmail = useCallback((e) => {
         console.log(e.target.value);
-        setUserId(e.target.value);
-    },[userId])
+        setUserEmail(e.target.value);
+    },[userEmail])
 
     const onChangePW = useCallback((e) => {
         console.log(e.target.value);
         setUserPW(e.target.value);
     },[userPw])
 
-    const checkPw = useCallback((e) => {
+    const checkPw = (e) => {
         const pw = e.target.value;
         console.log(pw);
         if(pw === userPw){
@@ -82,24 +114,26 @@ function Index({}){
         }else{
             setPWError(true);
         }
+    }
 
-    },[])
-
-    const setUserType = useCallback((type) => {
-        // e.preventDefault();                
-        if(!term){
-            return setTermError(true);
-		}
-        console.log(type);
-        setType(type);
-        if(type === "store"){
-            setisCustomer(false);
+    const onChangeTypeStore = useCallback((e) => {
+        console.log(isStore);
+        if(isStore){
+            setisStore(false);
+        }else{
             setisStore(true);
+            setisCustomer(false);
+        }
+    },[isStore, isCustomer])
+
+    const onChangeTypeCustomer = useCallback((e) => {
+        if(isCustomer){
+            setisCustomer(false);
         }else{
             setisCustomer(true);
             setisStore(false);
         }
-    },[type])
+    },[isCustomer, isStore])
 
     const onChangeCustomer = useCallback((e) => {
         const { name, value } = e.target;
@@ -110,26 +144,29 @@ function Index({}){
         });
     }, [customerInfo])
 
-    const onChangeStore = useCallback((e) => {
+    const onChangeStore = (e) => {
         const { name, value } = e.target;
         console.log(name + " : " + value);
         setStoreInfo({
             ...storeInfo,
             [name] : value
         });
-    },[storeInfo])
+    }
 
-    const sumbitHandler = useCallback((e) => {
-        if(termError){
+    const sumbitHandler = (e) => {
+        if(!term){
             alert("약관에 동의하셔야 합니다.");
             // return history.push("/main/signup");
-            return history.goBack(0);
+
+            // return window.location.href = "/signup"
         }
         if(pwError){
             alert("비밀번호가 일치하지 않습니다.")
             return history.goBack(0);
         }
-    })
+
+
+    }
 
     return(
         <Container>
@@ -142,22 +179,26 @@ function Index({}){
                		{termError && <div style={{color : 'red'}}>약관에 동의하셔야 합니다.</div>}
 				</Box>
                 <Box>
-                    <label> 아이디 : </label><input type="text" onChange={onChangeId} required/>
-                    <label> 비밀번호 : </label><input type="password" onChange={onChangePW} required/>
-                    <label> 비밀번호 확인 : </label><input type="password" onChange={checkPw} required/>
+                    <SignupInput type="email" name="email" onChange={onChangeEmail} placeholder="이메일@test.com"/>
+                    <SignupInput type="password" onChange={onChangePW} placeholder="비밀번호" required/>
+                    <SignupInput type="password" onChange={checkPw} placeholder="비밀번호 확인" required/>
                     {pwError && <div style={{color : 'red'}}>비밀번호가 일치하지 않습니다.</div>}
                 </Box>
-                <TypeBtn onClick={setUserType("store")}>카페로 시작하기 {'>'} </TypeBtn>
-                {isStore && <>
-                <label>이메일 : </label> <input type="email" name="email" onChange={onChangeCustomer}/>
-                <label>이름 : </label> <input type="text" name="name" onChange={onChangeCustomer}/>
-                </>}
-                <TypeBtn onClick={setUserType("customer")}>손님으로 시작하기 {'>'}</TypeBtn>
-                {isCustomer && <>
-                <label>카페상호명 : </label><input type="text" name="cafeName" onChange={onChangeStore}/>
-                <label>전화번호 : </label><input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" onChange={onChangeStore}/>
-                </>}
-                <SubmitBtn onClick={sumbitHandler}></SubmitBtn>
+                <TypeBtn>카페로 시작하기 
+                    <input type="radio" name="type" value={isStore} onChange={onChangeTypeStore} style={{position: "absolute", width: "15px", height: "15px", top: "15px", right: "10px"}}/>
+                </TypeBtn>
+                {isStore && <Box>
+                <SignupInput placeholder="카페 상호명" type="text" name="cafeName" onChange={onChangeStore}/>
+                <SignupInput placeholder="전화번호: 000-0000-0000" type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" onChange={onChangeStore}/>
+                </Box>}
+                <TypeBtn>손님으로 시작하기
+                    <input type="radio"  name="type" value={isCustomer} onChange={onChangeTypeCustomer} style={{position: "absolute", width: "15px", height: "15px", top: "15px", right: "10px"}}/>
+                </TypeBtn>
+                {isCustomer && <Box>
+                    <SignupInput type="text" name="name" onChange={onChangeCustomer} placeholder="이름"/>
+                </Box>}
+                
+                <SubmitBtn onClick={sumbitHandler}>WORKING COFFEE 시작하기</SubmitBtn>
             </SignupBox>
 
         </Container>
