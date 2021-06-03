@@ -4,16 +4,23 @@ import {Link, Redirect, useHistory} from "react-router-dom";
 import axios from 'axios';
 import {ReactComponent as SearchIcon} from '../../../images/search.svg'
 import {ReactComponent as LogoutIcon} from '../../../images/logout.svg'
+import logo from '../../../images/titleLogo.png'
 
 const Container = styled.div`
 background-color : #ff8b00;
-margin-left : 200px;
+width: 100%;
+// margin-left : 200px;
 height : 40px;
 position : relative;
 `
+const HomeButton = styled.a`
+margin-left: 10px;
+`
 const Search = styled.div `
-position : relative;
-width: 80%;
+position : absolute;
+left: 150px;
+top: 0px;
+width: 50%;
 `
 const LogoutButton = styled.button`
 background-color: "#ff8b00";
@@ -40,20 +47,6 @@ top: 5px;
 padding-left: 10px;
 `
 
-const Alarm = styled.div `
-width : 15px;
-height : 15px;
-border-radius : 50%;
-background-color : red;
-border : none;
-position : absolute;
-top : -7px;
-right : -7px;
-color : white;
-font-size : 10px;
-text-align : center;
-line-height : 15px;
-`
 
 function Index() {
     const history = useHistory();
@@ -74,6 +67,9 @@ function Index() {
     
     return (
         <Container>
+            <HomeButton href="/">
+                <img style={{maxHeight: "50px"}} src={logo} alt="home"/>
+            </HomeButton>
             <Search>
                 <Input type = "text" placeholder = "검색어를 입력해주세요" ></Input>
                 <button style = {{alignItems : 'center', position : 'absolute', right : '5px', border: "none", backgroundColor: "white", top: "10px"}}>

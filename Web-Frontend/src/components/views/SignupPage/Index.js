@@ -160,12 +160,12 @@ function Index(){
 
             // return window.location.href = "/signup"
         }
-        if(pwError){
+        else if(pwError){
             alert("비밀번호가 일치하지 않습니다.")
             return history.goBack(0);
+        }else{
+
         }
-
-
     }
 
     return(

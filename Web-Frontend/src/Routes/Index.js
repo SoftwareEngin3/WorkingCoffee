@@ -14,14 +14,12 @@ const baseUrl = "/main/"
 function Index(){
     return(
         <>
-            <LeftBar/>
             <TopBar/>
-            {/* <Router>
+            <Router>
                 <Switch>
                     <Route exact path={baseUrl} component={Main} />
-                    <Route path={baseUrl+"signup"} component={Signup} />
                 </Switch>
-            </Router> */}
+            </Router>
         </>
     )
 }
