@@ -84,9 +84,9 @@ function Index (){
             <img style={{maxHeight: "75px", margin: "10% auto", marginBottom: "0", display: "block"}} src={logo_mark} alt="logo_mark"/>
             <img style={{maxWidth: "300px", margin: "5px auto", display: "block"}} src={logo_text} alt="logo_text"/>
             <Box>
-                <LoginInput type="text" placeholder="아이디" onChange={onChangeEmail}/>
+                <LoginInput type="text" placeholder="이메일" onChange={onChangeEmail}/>
                 <LoginInput type="password" placeholder="비밀번호" onChange={onChangePW}/>
-                {isError && <div style={{color : 'red'}}>아이디와 비밀번호를 다시 확인하십시오.</div>}
+                {isError && <div style={{color : 'red'}}>이메일과 비밀번호를 다시 확인하십시오.</div>}
                 <Button style={{marginTop: "15px"}} onClick={login}>로그인</Button>
                 <Button onClick={goSignUp}>회원가입</Button>
             </Box>

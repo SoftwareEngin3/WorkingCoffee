@@ -4,6 +4,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import {Checkbox} from 'antd';
 import { useHistory } from "react-router-dom";
+import MapContainer from '../../utils/Map/MapContainer'
 
 const Container = styled.div`
 width: 500px;
@@ -48,6 +49,17 @@ background-color: #ff8b00;
 position : relative;
 // box-shadow: 3px 5px 5px 3px #f5f5f5;
 `
+const SearchBtn = styled.button`
+width: 10%;
+height: 30px;
+position : absolute;
+top: 27.4px;
+// bottom: 5px
+right: 0px;
+border-radius: 5px;
+background-color: #ff8b00;
+color: white;
+`
 const SubmitBtn = styled.button`
 width: 100%;
 height: 50px;
@@ -83,6 +95,7 @@ function Index(){
 
     const [term,setTerm] = useState(false);
 	const [termError,setTermError] = useState(false);
+    const [searchInput, setSearchInput] = useState("")
 
     const history = useHistory();
     
@@ -153,6 +166,17 @@ function Index(){
         });
     }
 
+    const onChangePlace = (e) => {
+        setSearchInput(e.target.value);
+    }
+
+    const search = (e) => {
+        e.preventDefault();
+        setStoreInfo({location: searchInput});
+        console.log(storeInfo)
+        setSearchInput("");
+    }
+
     const sumbitHandler = (e) => {
         if(!term){
             alert("약관에 동의하셔야 합니다.");
@@ -190,6 +214,12 @@ function Index(){
                 {isStore && <Box>
                 <SignupInput placeholder="카페 상호명" type="text" name="cafeName" onChange={onChangeStore}/>
                 <SignupInput placeholder="전화번호: 000-0000-0000" type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" onChange={onChangeStore}/>
+                <div style={{width: "100%", position: "relative"}}>
+                    <label>카페 위치</label>
+                    <SignupInput style={{width: "85%", margin: "5px 0px"}} placeholder="카페 위치 검색" type="text" name="cafeName" onChange={onChangePlace}/>
+                    <SearchBtn onClick={search}>검색</SearchBtn>
+                </div>
+                <MapContainer searchPlace={storeInfo.location}/>
                 </Box>}
                 <TypeBtn>손님으로 시작하기
                     <input type="radio"  name="type" value={isCustomer} onChange={onChangeTypeCustomer} style={{position: "absolute", width: "15px", height: "15px", top: "15px", right: "10px"}}/>
