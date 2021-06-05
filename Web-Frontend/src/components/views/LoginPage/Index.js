@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useAsync } from "react-async"
-import { authService, firebaseInstance } from "../../../fbase";
+// import { authService, firebaseInstance } from "../../../fbase";
 import styled from 'styled-components';
 import logo_text from '../../../images/titleBlack.png'
 import logo_mark from '../../../images/logoCoffee.png'
@@ -64,7 +64,7 @@ function Index (){
     const login = async(e) => {
         let data;
         e.preventDefault();
-        try{
+        /* try{
             // log in
             data = await authService.signInWithEmailAndPassword(
                 email, password
@@ -76,7 +76,7 @@ function Index (){
             console.log(error);
             setisError(true);
         }
-
+ */
     }
 
     return(

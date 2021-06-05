@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {Checkbox} from 'antd';
 import { useHistory } from "react-router-dom";
 import MapContainer from '../../utils/Map/MapContainer'
+import DaumPost from '../../utils/Map/PostCode'
 
 const Container = styled.div`
 width: 500px;
@@ -60,6 +61,15 @@ border-radius: 5px;
 background-color: #ff8b00;
 color: white;
 `
+const PostCodeBtn = styled.button`
+position : absolute;
+right: 5px;
+height: 30px;
+padding: 3px;
+border-radius: 5px;
+background-color: #ff8b00;
+color: white;
+`
 const SubmitBtn = styled.button`
 width: 100%;
 height: 50px;
@@ -75,6 +85,18 @@ font-weight: 700;
     background-color: white;
 }
 `
+const Modal = styled.div`
+    display: block;
+    position: fixed;
+    justify-content: center;
+    top: 50px;
+    left: 50%; 
+    width: 400px;
+    height: 500px;
+    padding: 7px;
+    zindex: 10000;
+    transform: translateX(-50%);
+`
 
 function Index(){
     const [userEmail, setUserEmail] = useState('');
@@ -89,13 +111,15 @@ function Index(){
     const [storeInfo, setStoreInfo] = useState({
         cafeName: "",
         phone: "",
-        location: "",
+        location: {location: "", detail: ""},
         info: ""
     })
 
     const [term,setTerm] = useState(false);
 	const [termError,setTermError] = useState(false);
-    const [searchInput, setSearchInput] = useState("")
+    const [isPopOpen, setisPopOpen] = useState(false);
+    const [location, setLocation] =  useState('');
+    const [locationDetail, setLocationDetail] =  useState('');
 
     const history = useHistory();
     
@@ -166,15 +190,21 @@ function Index(){
         });
     }
 
-    const onChangePlace = (e) => {
-        setSearchInput(e.target.value);
+
+    const onChangeLocation = (fullAddress) => {
+        setLocation(fullAddress);
+    }
+    const openPostCode = (e) => {
+        e.preventDefault();
+        setisPopOpen(true);
     }
 
-    const search = (e) => {
-        e.preventDefault();
-        setStoreInfo({location: searchInput});
-        console.log(storeInfo)
-        setSearchInput("");
+    const closePostCode = () => {
+        setisPopOpen(false);
+        setStoreInfo({location: {location: location}})
+    }
+    const onChangeLocationDetail = (e) => {
+        setLocationDetail(e.target.value);
     }
 
     const sumbitHandler = (e) => {
@@ -188,6 +218,12 @@ function Index(){
             alert("비밀번호가 일치하지 않습니다.")
             return history.goBack(0);
         }else{
+            if(isStore){
+                
+            }
+            else{
+
+            }
 
         }
     }
@@ -216,10 +252,16 @@ function Index(){
                 <SignupInput placeholder="전화번호: 000-0000-0000" type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" onChange={onChangeStore}/>
                 <div style={{width: "100%", position: "relative"}}>
                     <label>카페 위치</label>
-                    <SignupInput style={{width: "85%", margin: "5px 0px"}} placeholder="카페 위치 검색" type="text" name="cafeName" onChange={onChangePlace}/>
-                    <SearchBtn onClick={search}>검색</SearchBtn>
+                    <PostCodeBtn onClick={openPostCode}>우편번호 검색</PostCodeBtn>
+                    {isPopOpen && <Modal>
+                        <DaumPost closePostCode={closePostCode} onChangeLocation={onChangeLocation}/>
+                        <button style={{position: "fixed", top: "-10px", right: "10px"}} onClick={closePostCode}>닫기</button>
+                        </Modal>}
                 </div>
-                <MapContainer searchPlace={storeInfo.location}/>
+                <div style={{marginTop: "10px"}}>
+                    <SignupInput type="text" value={storeInfo.location.location} readOnly/>
+                    <SignupInput type="text" onChange={onChangeLocationDetail} placeholder="상세주소"/>
+                </div>
                 </Box>}
                 <TypeBtn>손님으로 시작하기
                     <input type="radio"  name="type" value={isCustomer} onChange={onChangeTypeCustomer} style={{position: "absolute", width: "15px", height: "15px", top: "15px", right: "10px"}}/>

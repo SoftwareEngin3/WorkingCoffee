@@ -38,6 +38,14 @@ function Index({}){
                         카페 예약
                     </MenuBtn></td>
                 </tr>
+                <tr>
+                    <td style={{width: "50%"}}><MenuBtn>
+                    <div>리뷰 작성</div>
+                    </MenuBtn></td>
+                    <td style={{width: "50%"}}><MenuBtn>
+                        내 정보 확인
+                    </MenuBtn></td>
+                </tr>
             </tbody>
         </table>
     </Container>

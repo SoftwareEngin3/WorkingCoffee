@@ -28,7 +28,7 @@ function Index(){
             <tbody>
                 <tr>
                     <td><MenuBtn href="/store/info">카페 정보 입력/수정</MenuBtn></td>
-                    <td><MenuBtn >리뷰 확인</MenuBtn></td>
+                    <td><MenuBtn href="/store/review" >리뷰 확인</MenuBtn></td>
                 </tr>
             </tbody>
         </table>

@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {ReactComponent as PlusIcon} from '../../../images/plus.svg'
+import DaumPost from '../../utils/Map/PostCode'
+import { TimePicker } from 'antd';
 
 const Container = styled.div`
 width: 100%;
@@ -79,6 +81,31 @@ line-height: 20px;
 position : relative;
 margin: 5px auto;
 `
+const Modal = styled.div`
+display: block;
+position: fixed;
+justify-content: center;
+top: 50px;
+left: 50%; 
+width: 400px;
+height: 500px;
+padding: 7px;
+zindex: 10000;
+transform: translateX(-50%);
+`
+const PostCodeBtn = styled.button`
+position : absolute;
+right: 5px;
+height: 30px;
+padding: 3px;
+border-radius: 5px;
+background-color: #ff8b00;
+color: white;
+`
+const TimeBox = styled.div`
+width: 100%;
+`
+
 function ShowMenu({menu, id, categoryId, deleteMenu}){
     const numberWithCommas = (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -151,6 +178,11 @@ function Index(){
     const [name, setName] = useState("가게이름");
     const [phone, setPhone] = useState("000-0000-0000");
     const [info, setInfo] = useState("");
+    const [address, setAddress] = useState("");
+    const [addressDetail, setAddressDetail] = useState("");
+    const [startTime, setStartTime] = useState([]);
+    const [endTime, setEndTime] = useState([]);
+    const [limit, setLimit] = useState([]);
 
     const [menulist, setMenuList] = useState([]);
 
@@ -158,6 +190,8 @@ function Index(){
 
     const [showInput, setShowInput] = useState(false);
     const [pwError, setPWError] = useState(false);
+    const [isPopOpen, setisPopOpen] = useState(false);
+    const week = ["월", "화", "수", "목", "금", "토", "일"]
 
     const onChangePW = useCallback((e) => {
         console.log(e.target.value);
@@ -227,6 +261,22 @@ function Index(){
         console.log(menulist[category]);
     }
 
+    const onChangeAddress = (fullAddress) => {
+        setAddress(fullAddress);
+    }
+
+    const openPostCode = (e) => {
+        e.preventDefault();
+        setisPopOpen(true);
+    }
+
+    const closePostCode = () => {
+        setisPopOpen(false);
+    }
+    const onChangeAddressDetail = (e) => {
+        setAddressDetail(e.target.value);
+    }
+
     const sumbitHandler = (e) => {
         e.preventDefault();
         return window.location.href = "/store/"
@@ -235,6 +285,10 @@ function Index(){
     const cancel = (e) => {
         e.preventDefault();
         return window.location.href = "/store"
+    }
+
+    const onChangeLimit = (e, index) => {
+        limit[index] = e.target.value;
     }
 
     useEffect(()=>{
@@ -263,7 +317,20 @@ function Index(){
                 <InfoInput placeholder={phone} type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" onChange={onChangePhone}/>
                 <label style={{fontSize: "12px"}}>카페 소개글</label>
                 <textarea placeholder={info} onChange={onChangeInfo} style={{height: "60px", width: "100%", resize: "none", border: "none"}}/>
-                <label style={{fontSize: "12px"}}>위치 확인</label>
+                <div style={{width: "100%", position: "relative"}}>
+                    <label style={{fontSize: "12px"}}>위치 확인</label>
+                    <PostCodeBtn onClick={openPostCode}>우편번호 검색</PostCodeBtn>
+                    {isPopOpen && <Modal>
+                        <DaumPost closePostCode={closePostCode} onChangeLocation={onChangeAddress}/>
+                        <button style={{position: "fixed", top: "-10px", right: "10px"}} onClick={closePostCode}>닫기</button>
+                        </Modal>}
+                </div>
+                <div style={{marginTop: "10px"}}>
+                    <InfoInput type="text" value={address} readOnly/>
+                    <InfoInput type="text" onChange={onChangeAddressDetail} placeholder="상세주소"/>
+                </div>
+                <label style={{fontSize: "12px"}}>예약 제한(시간당)</label>
+                {week.map((value, index)=> <TimeBox>{value} : <InfoInput style={{width: "80%"}} type="number" onChange={(e) => onChangeLimit(e, index)}/></TimeBox>)}
             </Box>
             <label>메뉴</label>
             <Box style={{paddingTop: "60px"}}>
