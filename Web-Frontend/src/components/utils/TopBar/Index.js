@@ -70,12 +70,12 @@ function Index() {
             <HomeButton href="/">
                 <img style={{maxHeight: "50px"}} src={logo} alt="home"/>
             </HomeButton>
-            <Search>
+            {/* <Search>
                 <Input type = "text" placeholder = "검색어를 입력해주세요" ></Input>
                 <button style = {{alignItems : 'center', position : 'absolute', right : '5px', border: "none", backgroundColor: "white", top: "10px"}}>
                     <SearchIcon width="20px" fill="#6f6f6f"/>
                 </button>
-            </Search>
+            </Search> */}
             <LogoutButton onClick={onLogout}>
                 <LogoutIcon width="20px"/>
             </LogoutButton>
