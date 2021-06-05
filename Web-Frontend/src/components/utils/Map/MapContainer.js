@@ -42,15 +42,15 @@ const MapContainer = ({searchPlace}) => {
             
             // 마커를 생성하고 지도에 표시
             let marker = new kakao.maps.Marker({
-                map: map
-                // position: new kakao.maps.LatLng(place.y, place.x),
+                map: map,
+                position: new kakao.maps.LatLng(place.y, place.x),
                 // position: map.getCenter()
                 // clickable: true
-            }), infowindow = new kakao.maps.InfoWindow({zindex:1});
+            })//, infowindow = new kakao.maps.InfoWindow({zindex:1});
 
             marker.setMap(map);
             marker.setDraggable(true); 
-            
+            /* 
             // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
             kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
                 searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
@@ -72,9 +72,9 @@ const MapContainer = ({searchPlace}) => {
                         infowindow.open(map, marker);
                     }   
                 });
-            });
+            }); */
 
-            // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+           /*  // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
             kakao.maps.event.addListener(map, 'idle', function() {
                 searchAddrFromCoords(map.getCenter(), displayCenterInfo);
             });
@@ -102,7 +102,7 @@ const MapContainer = ({searchPlace}) => {
                         }
                     }
                 }    
-            }
+            } */
 
             /* // 마커에 클릭이벤트를 등록
             kakao.maps.event.addListener(marker, 'click', function() {
