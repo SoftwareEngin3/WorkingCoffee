@@ -2,7 +2,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {ReactComponent as PlusIcon} from '../../../images/plus.svg'
 import DaumPost from '../../utils/Map/PostCode'
-import { TimePicker } from 'antd';
+import 'antd/dist/antd.css';
+import { DatePicker, TimePicker} from 'antd';
 
 const Container = styled.div`
 width: 100%;
@@ -180,9 +181,8 @@ function Index(){
     const [info, setInfo] = useState("");
     const [address, setAddress] = useState("");
     const [addressDetail, setAddressDetail] = useState("");
-    const [startTime, setStartTime] = useState([]);
-    const [endTime, setEndTime] = useState([]);
-    const [limit, setLimit] = useState([]);
+    const [time, setTime] = useState([]);
+    const [limit, setLimit] = useState();
 
     const [menulist, setMenuList] = useState([]);
 
@@ -265,6 +265,11 @@ function Index(){
         setAddress(fullAddress);
     }
 
+    const onChangeTime = (value, dataString) => {
+        setTime(dataString);
+        console.log(dataString)
+    }
+
     const openPostCode = (e) => {
         e.preventDefault();
         setisPopOpen(true);
@@ -287,8 +292,8 @@ function Index(){
         return window.location.href = "/store"
     }
 
-    const onChangeLimit = (e, index) => {
-        limit[index] = e.target.value;
+    const onChangeLimit = (e) => {
+        setLimit(e.target.value);
     }
 
     useEffect(()=>{
@@ -315,6 +320,8 @@ function Index(){
                 <InfoInput placeholder={name} type="text" onChange={onChangeName}/>
                 <label style={{fontSize: "12px"}}>전화번호</label>
                 <InfoInput placeholder={phone} type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" onChange={onChangePhone}/>
+                <div style={{position: "relative", margin: "10px 0"}}><label style={{fontSize: "12px"}}>운영 시간</label>
+                <TimePicker.RangePicker style={{position: "absolute", right: "5px"}} format="HH:mm" onChange={onChangeTime}/></div>
                 <label style={{fontSize: "12px"}}>카페 소개글</label>
                 <textarea placeholder={info} onChange={onChangeInfo} style={{height: "60px", width: "100%", resize: "none", border: "none"}}/>
                 <div style={{width: "100%", position: "relative"}}>
@@ -330,7 +337,7 @@ function Index(){
                     <InfoInput type="text" onChange={onChangeAddressDetail} placeholder="상세주소"/>
                 </div>
                 <label style={{fontSize: "12px"}}>예약 제한(시간당)</label>
-                {week.map((value, index)=> <TimeBox>{value} : <InfoInput style={{width: "80%"}} type="number" onChange={(e) => onChangeLimit(e, index)}/></TimeBox>)}
+                <InfoInput type="number" onChange={onChangeLimit}/>
             </Box>
             <label>메뉴</label>
             <Box style={{paddingTop: "60px"}}>

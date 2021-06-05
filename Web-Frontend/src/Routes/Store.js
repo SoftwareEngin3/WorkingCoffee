@@ -7,6 +7,7 @@ import {
 import main from '../components/views/MainPage/Store'
 import info from '../components/views/StorePage/Index'
 import review from '../components/views/StorePage/checkReview'
+import book from '../components/views/BookPage/BookCheck'
 import TopBar from '../components/utils/TopBar/Index';
 
 const baseUrl = "/store/"
@@ -21,6 +22,7 @@ function Index(){
                     <Route exact path={baseUrl} component={main} />
                     <Route path={baseUrl + "info"} component={info} />
                     <Route path={baseUrl + "review"} component={review} />
+                    <Route path={baseUrl + "book"} component={book}/>
                 </Switch>
             </Router>
             </div>

@@ -34,7 +34,7 @@ function Index({}){
                         <SearchIcon width="40%" fill="#6f6f6f"/>
                         <div>카페 찾기</div>
                     </MenuBtn></td>
-                    <td style={{width: "50%"}}><MenuBtn>
+                    <td style={{width: "50%"}}><MenuBtn href="customer/book"> 
                         카페 예약
                     </MenuBtn></td>
                 </tr>

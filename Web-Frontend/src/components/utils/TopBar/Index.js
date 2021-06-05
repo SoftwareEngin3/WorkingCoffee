@@ -49,7 +49,6 @@ padding-left: 10px;
 
 
 function Index() {
-    const history = useHistory();
     const onLogout = useCallback((e)=>{
         e.preventDefault();
         axios.get('/api/auth/logout')
