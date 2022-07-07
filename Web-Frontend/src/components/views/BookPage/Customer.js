@@ -64,6 +64,16 @@ width: 20px;
 background-color: #ff8b00;
 color: white;
 `
+const Btn = styled.button`
+color: white;
+background: #74b95b;
+border-radius: 5px;
+padding: 10px;
+margin: 0 auto;
+&:hover{
+    background-color: #ff8b00;
+}
+`
 
 function Index({}){
     const [storeInfo, setStoreInfo] = useState(
@@ -173,7 +183,7 @@ function Index({}){
                 <div style={{marginTop: "10px"}}>총 금액 : <PriceBox>{totalPrice} 원</PriceBox></div>
             </TotalBox>
         </Box>
-        
+        <Btn>예약하기</Btn>
     </Container>
     );
 }

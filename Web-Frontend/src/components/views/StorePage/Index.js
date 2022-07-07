@@ -311,7 +311,7 @@ function Index(){
                 <label style={{fontSize: "12px"}}>비밀번호</label>
                 <InfoInput type="password" placeholder={password} onChange={onChangePW}/>
                 <label style={{fontSize: "12px"}}>비밀번호 확인</label>
-                <InfoInput type="password" placeholder={password} onChange={checkPw}/>
+                <InfoInput type="password" onChange={checkPw}/>
                 {pwError && <div style={{color : 'red'}}>비밀번호가 일치하지 않습니다.</div>}
             </Box>
             <label>가게 정보</label>
